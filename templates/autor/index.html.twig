@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Autores{% endblock %}
+
+{% block body %}
+    <h1>Autores</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for autor in autores %}
+            <tr>
+                <td>{{ autor.codAu }}</td>
+                <td>{{ autor.nome }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">Nenhum autor encontrado</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
