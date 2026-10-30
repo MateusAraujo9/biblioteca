@@ -44,6 +44,7 @@ Acesse: **http://localhost:8080**
 
 - [x] Ambiente Docker (PHP + Apache + MySQL)
 - [x] Projeto Symfony criado
-- [ ] Entidades e migrations
+- [x] Entidades e migrations
+- [ ] CRUD de Autor
 
 ...
