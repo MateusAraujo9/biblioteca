@@ -40,6 +40,16 @@ Acesse: **http://localhost:8080**
 | Aplicação | http://localhost:8080 | — |
 | MySQL | localhost:3307 | usuário `app` / senha `app` / banco `biblioteca` |
 
+## Como rodar os testes
+
+```bash
+# 1. Criar as tabelas no banco de teste na primeira vez que rodar os testes
+docker compose exec app php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+# 2. Rodar a suíte
+docker compose exec app php bin/phpunit
+```
+
 ## Status
 
 - [x] Ambiente Docker (PHP + Apache + MySQL)
