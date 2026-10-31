@@ -83,6 +83,18 @@ class AutorControllerTest extends WebTestCase
         self::assertResponseStatusCodeSame(404);
     }
 
+    public function testExcluirAutor(): void
+    {
+        $client = static::createClient();
+        $autor = $this->criarAutor('Machado');
+
+        $client->request('POST', '/autor/' . $autor->getCodAu() . '/excluir');
+
+        self::assertResponseRedirects('/autor');
+        $client->followRedirect();
+        self::assertSelectorTextContains('.alert-success', 'Autor excluído');
+    }
+
     private function criarAutor(string $name): Autor
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
