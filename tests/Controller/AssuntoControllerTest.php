@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\Assunto;
+use App\Entity\Livro;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AssuntoControllerTest extends WebTestCase
@@ -96,6 +97,34 @@ class AssuntoControllerTest extends WebTestCase
         self::assertResponseRedirects('/assunto');
         $client->followRedirect();
         self::assertSelectorTextContains('.alert-success', 'Assunto excluído');
+    }
+
+    public function testNaoExcluirAssuntoVinculadoALivro(): void
+    {
+        $client = static::createClient();
+        $assunto = $this->criarAssunto('Ficção');
+        $id = $assunto->getCodAs();
+
+        // Vincula o assunto a um livro
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $livro = new \App\Entity\Livro();
+        $livro = (new Livro())
+        ->setTitulo('Livro Teste')
+        ->setEditora('Editora Teste')
+        ->setEdicao(1)
+        ->setAnoPublicacao('2024')
+        ->setValor(50.00)
+        ->addAssunto($assunto);
+        $entityManager->persist($livro);
+        $entityManager->flush();
+
+        $crawler = $client->request('GET', '/assunto');
+        $form = $crawler->filter(sprintf('form[action="/assunto/%d/excluir"]', $id))->form();
+        $client->submit($form);
+
+        self::assertResponseRedirects('/assunto');
+        $client->followRedirect();
+        self::assertSelectorTextContains('.alert-danger', 'O assunto está vinculado a um livro');
     }
 
     private function criarAssunto(string $descricao): Assunto

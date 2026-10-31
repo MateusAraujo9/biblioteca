@@ -4,6 +4,8 @@ namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Assunto;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
+use App\Exception\AssuntoVinculadoException;
 
 class AssuntoService
 {
@@ -20,7 +22,12 @@ class AssuntoService
 
     public function excluir(Assunto $assunto): void
     {
-        $this->entityManager->remove($assunto);
-        $this->entityManager->flush();
+        try {
+            $this->entityManager->remove($assunto);
+            $this->entityManager->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            throw new AssuntoVinculadoException();
+        }
+        
     }
 }

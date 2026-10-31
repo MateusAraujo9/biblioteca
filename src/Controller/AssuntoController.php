@@ -10,6 +10,7 @@ use App\Service\AssuntoService;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Assunto;
 use App\Form\AssuntoType;
+use App\Exception\AssuntoVinculadoException;
 
 #[Route('/assunto')]
 class AssuntoController extends AbstractController
@@ -74,9 +75,12 @@ class AssuntoController extends AbstractController
             return $this->redirectToRoute('app_assunto_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $this->assuntoService->excluir($assunto);
-        $this->addFlash('success', 'Assunto excluído');
-        
+        try {
+            $this->assuntoService->excluir($assunto);
+            $this->addFlash('success', 'Assunto excluído');
+        } catch (AssuntoVinculadoException $e) {
+            $this->addFlash('danger', 'O assunto está vinculado a um livro');
+        }
 
         return $this->redirectToRoute('app_assunto_index', [], Response::HTTP_SEE_OTHER);
     }
