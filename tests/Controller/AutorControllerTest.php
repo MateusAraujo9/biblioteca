@@ -3,6 +3,8 @@
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Entity\Autor;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AutorControllerTest extends WebTestCase
 {
@@ -54,5 +56,40 @@ class AutorControllerTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(422);
         self::assertSelectorTextContains('form', 'no máximo 40 caracteres');
+    }
+
+    public function testEditarAutor(): void
+    {
+        $client = static::createClient();
+        $autor = $this->criarAutor('Machado');
+
+        $client->request('GET', '/autor/' . $autor->getCodAu() . '/editar');
+        $client->submitForm('Salvar', [
+            'autor[nome]' => 'Machado de Assis',
+        ]);
+
+        self::assertResponseRedirects('/autor');
+        $client->followRedirect();
+        self::assertSelectorTextContains('table', 'Machado de Assis');
+        self::assertSelectorTextContains('.alert-success', 'Autor atualizado');
+    }
+
+    public function testEditarAutorInexistenteRetorna404(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/autor/999999/editar');
+
+        self::assertRouteSame('app_autor_edit');
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    private function criarAutor(string $name): Autor
+    {
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $autor = (new Autor())->setNome($name);
+        $entityManager->persist($autor);
+        $entityManager->flush();
+        
+        return $autor;
     }
 }
