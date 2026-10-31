@@ -11,6 +11,7 @@
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -18,10 +19,17 @@
             <tr>
                 <td>{{ autor.codAu }}</td>
                 <td>{{ autor.nome }}</td>
+                <td>
+                    <a 
+                        href="{{ path('app_autor_edit', {'id': autor.codAu}) }}" 
+                        class="btn btn-outline-warning btn-sm"
+                    >
+                        Editar
+                    </a>
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">Nenhum autor encontrado</td>
+                <td colspan="3">Nenhum autor encontrado</td>
             </tr>
         {% endfor %}
         </tbody>
