@@ -29,4 +29,30 @@ class AssuntoControllerTest extends WebTestCase
         self::assertSelectorTextContains('table', 'Ficção');
         self::assertSelectorTextContains('.alert-success', 'Assunto cadastrado');
     }
+
+    public function testNaoCadastrarAssuntoComDescricaoVazia(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/assunto/novo');
+
+        $client->submitForm('Salvar', [
+            'assunto[descricao]' => '',
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('form', 'Informe a descrição do assunto');
+    }
+
+    public function testNaoCadastrarAssuntoComDescricaoMuitoLonga(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/assunto/novo');
+
+        $client->submitForm('Salvar', [
+            'assunto[descricao]' => str_repeat('a', 21),
+        ]);
+
+        self::assertResponseStatusCodeSame(422);
+        self::assertSelectorTextContains('form', 'no máximo 20 caracteres');
+    }
 }
