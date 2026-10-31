@@ -5,6 +5,7 @@ namespace App\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\Autor;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Livro;
 
 class AutorControllerTest extends WebTestCase
 {
@@ -106,5 +107,33 @@ class AutorControllerTest extends WebTestCase
         $entityManager->flush();
         
         return $autor;
+    }
+
+    public function testNaoExcluirAutorVinculadoALivro(): void
+    {
+        $client = static::createClient();
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+
+        // Cria um autor e um livro vinculado a ele
+        $autor = (new Autor())->setNome('Autor Vinculado');
+        $entityManager->persist($autor);
+        $livro = (new Livro())
+        ->setTitulo('Livro Teste')
+        ->setEditora('Editora Teste')
+        ->setEdicao(1)
+        ->setAnoPublicacao('2024')
+        ->setValor(50.00)
+        ->addAutor($autor);
+        $entityManager->persist($livro);
+        $entityManager->flush();
+
+        // Tenta excluir o autor vinculado ao livro
+        $crawler = $client->request('GET', '/autor');
+        $form = $crawler->filter(sprintf('form[action="/autor/%d/excluir"]', $autor->getCodAu()))->form();
+        $client->submit($form);
+
+        self::assertResponseRedirects('/autor');
+        $client->followRedirect();
+        self::assertSelectorTextContains('.alert-error', 'ele está vinculado a um livro');
     }
 }
