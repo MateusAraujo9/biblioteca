@@ -3,6 +3,8 @@
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Entity\Assunto;
+use Doctrine\ORM\EntityManagerInterface;
 
 class AssuntoControllerTest extends WebTestCase
 {
@@ -54,5 +56,31 @@ class AssuntoControllerTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(422);
         self::assertSelectorTextContains('form', 'no máximo 20 caracteres');
+    }
+
+    public function testEditarAssunto(): void
+    {
+        $client = static::createClient();
+        $assunto = $this->criarAssunto('Ficção');
+
+        $client->request('GET', '/assunto/' . $assunto->getCodAs() . '/editar');
+        $client->submitForm('Salvar', [
+            'assunto[descricao]' => 'Romance',
+        ]);
+
+        self::assertResponseRedirects('/assunto');
+        $client->followRedirect();
+        self::assertSelectorTextContains('table', 'Romance');
+        self::assertSelectorTextContains('.alert-success', 'Assunto atualizado');
+    }
+
+    private function criarAssunto(string $descricao): Assunto
+    {
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $assunto = (new Assunto())->setDescricao($descricao);
+        $entityManager->persist($assunto);
+        $entityManager->flush();
+
+        return $assunto;
     }
 }
