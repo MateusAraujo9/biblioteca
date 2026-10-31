@@ -16,28 +16,14 @@ class LivroRepository extends ServiceEntityRepository
         parent::__construct($registry, Livro::class);
     }
 
-//    /**
-//     * @return Livro[] Returns an array of Livro objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('l.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Livro
-//    {
-//        return $this->createQueryBuilder('l')
-//            ->andWhere('l.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findAllComRelacionamentos(): array
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin('l.autores', 'a')
+            ->addSelect('a')
+            ->leftJoin('l.assuntos', 's')
+            ->addSelect('s')
+            ->getQuery()
+            ->getResult();
+    }
 }

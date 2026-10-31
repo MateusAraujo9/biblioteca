@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livros{% endblock %}
+
+{% block body %}
+    <h1>Livros</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Titulo</th>
+                <th>Editora</th>
+                <th>Edição</th>
+                <th>Assunto</th>
+                <th>Autor</th>
+                <th>Ano Publicação</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livro in livros %}
+            <tr>
+                <td>{{ livro.codl }}</td>
+                <td>{{ livro.titulo }}</td>
+                <td>{{ livro.editora }}</td>
+                <td>{{ livro.edicao }}</td>
+                <td>{{ livro.assuntos|map(a => a.descricao)|join(', ') }}</td>
+                <td>{{ livro.autores|map(a => a.nome)|join(', ') }}</td>
+                <td>{{ livro.anoPublicacao }}</td>
+                <td>{{ livro.valor }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">Nenhum livro encontrado</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
