@@ -62,4 +62,20 @@ class AutorController extends AbstractController
             'autor' => $autor,
         ]);
     }
+
+    #[Route('/{id}/excluir', name: 'app_autor_delete', methods: ['POST'])]
+    public function delete(Request $request, Autor $autor, EntityManagerInterface $entityManager): Response
+    {
+        if (!$this->isCsrfTokenValid('delete'.$autor->getCodAu(), $request->request->get('_token'))) {
+            $this->addFlash('error', 'Token CSRF inválido');
+            return $this->redirectToRoute('app_autor_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $entityManager->remove($autor);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Autor excluído');
+
+        return $this->redirectToRoute('app_autor_index', [], Response::HTTP_SEE_OTHER);
+    }
 }

@@ -87,8 +87,11 @@ class AutorControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $autor = $this->criarAutor('Machado');
+        $id = $autor->getCodAu();
 
-        $client->request('POST', '/autor/' . $autor->getCodAu() . '/excluir');
+        $crawler = $client->request('GET', '/autor');
+        $form = $crawler->filter(sprintf('form[action="/autor/%d/excluir"]', $id))->form();
+        $client->submit($form);
 
         self::assertResponseRedirects('/autor');
         $client->followRedirect();
