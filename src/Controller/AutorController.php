@@ -31,8 +31,8 @@ class AutorController extends AbstractController
     #[Route('/novo', name: 'app_autor_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
-        $autor = new \App\Entity\Autor();
-        $form = $this->createForm(\App\Form\AutorType::class, $autor);
+        $autor = new Autor();
+        $form = $this->createForm(AutorType::class, $autor);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
