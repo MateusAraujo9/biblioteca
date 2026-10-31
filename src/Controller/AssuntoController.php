@@ -46,4 +46,23 @@ class AssuntoController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{id}/editar', name: 'app_assunto_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Assunto $assunto): Response
+    {
+        $form = $this->createForm(AssuntoType::class, $assunto);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->assuntoService->salvar($assunto);
+            $this->addFlash('success', 'Assunto atualizado');
+
+            return $this->redirectToRoute('app_assunto_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('assunto/edit.html.twig', [
+            'form' => $form,
+            'assunto' => $assunto,
+        ]);
+    }
 }

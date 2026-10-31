@@ -11,6 +11,7 @@
             <tr>
                 <th>Código</th>
                 <th>Descrição</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -18,10 +19,14 @@
                 <tr>
                     <td>{{ assunto.codAs }}</td>
                     <td>{{ assunto.descricao }}</td>
+                    <td>
+                        <a href="{{ path('app_assunto_edit', {'id': assunto.codAs}) }}" class="btn btn-outline-warning btn-sm">
+                            Editar
+                        </a>
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="2">Nenhum assunto cadastrado.</td>
+                    <td colspan="3">Nenhum assunto cadastrado.</td>
                 </tr>
             {% endfor %}
         </tbody>

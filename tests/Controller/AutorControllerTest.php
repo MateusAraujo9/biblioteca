@@ -99,16 +99,6 @@ class AutorControllerTest extends WebTestCase
         self::assertSelectorTextContains('.alert-success', 'Autor excluído');
     }
 
-    private function criarAutor(string $name): Autor
-    {
-        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
-        $autor = (new Autor())->setNome($name);
-        $entityManager->persist($autor);
-        $entityManager->flush();
-        
-        return $autor;
-    }
-
     public function testNaoExcluirAutorVinculadoALivro(): void
     {
         $client = static::createClient();
@@ -135,5 +125,15 @@ class AutorControllerTest extends WebTestCase
         self::assertResponseRedirects('/autor');
         $client->followRedirect();
         self::assertSelectorTextContains('.alert-danger', 'O autor está vinculado a um livro');
+    }
+
+    private function criarAutor(string $name): Autor
+    {
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $autor = (new Autor())->setNome($name);
+        $entityManager->persist($autor);
+        $entityManager->flush();
+        
+        return $autor;
     }
 }
