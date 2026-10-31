@@ -134,6 +134,6 @@ class AutorControllerTest extends WebTestCase
 
         self::assertResponseRedirects('/autor');
         $client->followRedirect();
-        self::assertSelectorTextContains('.alert-error', 'ele está vinculado a um livro');
+        self::assertSelectorTextContains('.alert-danger', 'O autor está vinculado a um livro');
     }
 }

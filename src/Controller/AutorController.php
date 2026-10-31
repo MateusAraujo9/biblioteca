@@ -7,13 +7,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Exception\AutorVinculadoException;
 use App\Entity\Autor;
 use App\Form\AutorType;
+use App\Service\AutorService;
 
 #[Route('/autor')]
 class AutorController extends AbstractController
 {
+    public function __construct(
+        private readonly AutorService $autorService,
+    ) {
+    }
+
     #[Route('', name: 'app_autor_index', methods: ['GET'])]    
     public function index(AutorRepository $autorRepository): Response
     {
@@ -23,15 +29,14 @@ class AutorController extends AbstractController
     }
 
     #[Route('/novo', name: 'app_autor_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request): Response
     {
         $autor = new \App\Entity\Autor();
         $form = $this->createForm(\App\Form\AutorType::class, $autor);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($autor);
-            $entityManager->flush();
+            $this->autorService->salvar($autor);
 
             $this->addFlash('success', 'Autor cadastrado');
 
@@ -44,14 +49,13 @@ class AutorController extends AbstractController
     }
 
     #[Route('/{id}/editar', name: 'app_autor_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Autor $autor, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Autor $autor): Response
     {
         $form = $this->createForm(AutorType::class, $autor);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
+            $this->autorService->salvar($autor);
             $this->addFlash('success', 'Autor atualizado');
 
             return $this->redirectToRoute('app_autor_index', [], Response::HTTP_SEE_OTHER);
@@ -64,17 +68,20 @@ class AutorController extends AbstractController
     }
 
     #[Route('/{id}/excluir', name: 'app_autor_delete', methods: ['POST'])]
-    public function delete(Request $request, Autor $autor, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Autor $autor): Response
     {
         if (!$this->isCsrfTokenValid('delete'.$autor->getCodAu(), $request->request->get('_token'))) {
             $this->addFlash('error', 'Token CSRF inválido');
             return $this->redirectToRoute('app_autor_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        $entityManager->remove($autor);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Autor excluído');
+        try{
+            $this->autorService->excluir($autor);
+            $this->addFlash('success', 'Autor excluído');
+        } catch (AutorVinculadoException $e) {
+            $this->addFlash('danger', $e->getMessage());
+        }
+        
 
         return $this->redirectToRoute('app_autor_index', [], Response::HTTP_SEE_OTHER);
     }
