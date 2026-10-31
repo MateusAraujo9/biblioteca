@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Assuntos{% endblock %}
+
+{% block body %}
+    <h1>Assuntos</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assunto in assuntos %}
+                <tr>
+                    <td>{{ assunto.codAs }}</td>
+                    <td>{{ assunto.descricao }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Nenhum assunto cadastrado.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

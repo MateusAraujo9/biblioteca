@@ -55,6 +55,7 @@ docker compose exec app php bin/phpunit
 - [x] Ambiente Docker (PHP + Apache + MySQL)
 - [x] Projeto Symfony criado
 - [x] Entidades e migrations
-- [ ] CRUD de Autor
+- [x] CRUD de Autor
+- [ ] CRUD de Assunto
 
 ...
