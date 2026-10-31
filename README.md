@@ -56,6 +56,7 @@ docker compose exec app php bin/phpunit
 - [x] Projeto Symfony criado
 - [x] Entidades e migrations
 - [x] CRUD de Autor
-- [ ] CRUD de Assunto
+- [x] CRUD de Assunto
+- [ ] CRUD de livros
 
 ...
