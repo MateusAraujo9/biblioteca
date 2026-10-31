@@ -6,9 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\Assunto;
 use App\Entity\Livro;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Tests\Suport\CriaEntidadesTrait;
 
 class AssuntoControllerTest extends WebTestCase
 {
+    use CriaEntidadesTrait;
+
     public function testListagemDeAssuntosExibePagina(): void
     {
         $client = static::createClient();
@@ -125,15 +128,5 @@ class AssuntoControllerTest extends WebTestCase
         self::assertResponseRedirects('/assunto');
         $client->followRedirect();
         self::assertSelectorTextContains('.alert-danger', 'O assunto está vinculado a um livro');
-    }
-
-    private function criarAssunto(string $descricao): Assunto
-    {
-        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
-        $assunto = (new Assunto())->setDescricao($descricao);
-        $entityManager->persist($assunto);
-        $entityManager->flush();
-
-        return $assunto;
     }
 }

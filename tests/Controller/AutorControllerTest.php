@@ -6,16 +6,19 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\Autor;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Livro;
+use App\Tests\Suport\CriaEntidadesTrait;
 
 class AutorControllerTest extends WebTestCase
 {
+    use CriaEntidadesTrait;
+
     public function testListagemDeAutoresExibePagina(): void
     {
         $client = static::createClient();
         $client->request('GET', '/autor');
 
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Autores');
+        self::assertResponseIsSuccessful();
+        self::assertSelectorTextContains('h1', 'Autores');
     }
 
     public function testCadastraAutor(): void
@@ -125,15 +128,5 @@ class AutorControllerTest extends WebTestCase
         self::assertResponseRedirects('/autor');
         $client->followRedirect();
         self::assertSelectorTextContains('.alert-danger', 'O autor está vinculado a um livro');
-    }
-
-    private function criarAutor(string $name): Autor
-    {
-        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
-        $autor = (new Autor())->setNome($name);
-        $entityManager->persist($autor);
-        $entityManager->flush();
-        
-        return $autor;
     }
 }
