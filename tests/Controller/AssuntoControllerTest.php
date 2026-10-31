@@ -74,6 +74,30 @@ class AssuntoControllerTest extends WebTestCase
         self::assertSelectorTextContains('.alert-success', 'Assunto atualizado');
     }
 
+    public function testEditarAssuntoInexistenteRetorna404(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/assunto/999999/editar');
+
+        self::assertRouteSame('app_assunto_edit');
+        self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testExcluirAssunto(): void
+    {
+        $client = static::createClient();
+        $assunto = $this->criarAssunto('Ficção');
+        $id = $assunto->getCodAs();
+
+        $crawler = $client->request('GET', '/assunto');
+        $form = $crawler->filter(sprintf('form[action="/assunto/%d/excluir"]', $id))->form();
+        $client->submit($form);
+
+        self::assertResponseRedirects('/assunto');
+        $client->followRedirect();
+        self::assertSelectorTextContains('.alert-success', 'Assunto excluído');
+    }
+
     private function criarAssunto(string $descricao): Assunto
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
