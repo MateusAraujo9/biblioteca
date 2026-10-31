@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary">{{ botao|default('Salvar') }}</button>
+    <a href="{{ path('app_livro_index') }}" class="btn btn-secondary">Voltar</a>
+{{ form_end(form) }}

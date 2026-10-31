@@ -32,11 +32,11 @@ class LivroControllerTest extends WebTestCase
         $client->submitForm('Salvar', [
             'livro[titulo]' => 'Livro Teste',
             'livro[editora]' => 'Editora Teste',
-            'livro[edicao]' => '1ª Edição',
+            'livro[edicao]' => 1,
             'livro[anoPublicacao]' => '2023',
-            'livro[valor]' => '49.90',
-            'livro[autores][]' => $autor->getCodAu(),
-            'livro[assuntos][]' => $assunto->getCodAs(),
+            'livro[valor]' => 49.90,
+            'livro[autores]' => [$autor->getCodAu()],
+            'livro[assuntos]' => [$assunto->getCodAs()],
         ]);
 
         self::assertResponseRedirects('/livro');
