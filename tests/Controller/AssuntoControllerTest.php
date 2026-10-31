@@ -15,4 +15,18 @@ class AssuntoControllerTest extends WebTestCase
         $this->assertSelectorTextContains('h1', 'Assuntos');
     }
 
+    public function testCadastraAssunto(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/assunto/novo');
+
+        $client->submitForm('Salvar', [
+            'assunto[descricao]' => 'Ficção',
+        ]);
+
+        self::assertResponseRedirects('/assunto');
+        $client->followRedirect();
+        self::assertSelectorTextContains('table', 'Ficção');
+        self::assertSelectorTextContains('.alert-success', 'Assunto cadastrado');
+    }
 }
