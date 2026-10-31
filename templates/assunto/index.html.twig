@@ -23,6 +23,11 @@
                         <a href="{{ path('app_assunto_edit', {'id': assunto.codAs}) }}" class="btn btn-outline-warning btn-sm">
                             Editar
                         </a>
+                        <form method="post" action="{{ path('app_assunto_delete', {'id': assunto.codAs}) }}" style="display:inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir este assunto?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ assunto.codAs) }}">
+                            <button class="btn btn-outline-danger btn-sm">Excluir</button>
+                        </form>
+                    </td>
                 </tr>
             {% else %}
                 <tr>

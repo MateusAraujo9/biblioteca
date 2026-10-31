@@ -17,4 +17,10 @@ class AssuntoService
         $this->entityManager->persist($assunto);
         $this->entityManager->flush();
     }
+
+    public function excluir(Assunto $assunto): void
+    {
+        $this->entityManager->remove($assunto);
+        $this->entityManager->flush();
+    }
 }

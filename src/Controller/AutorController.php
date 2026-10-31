@@ -71,7 +71,7 @@ class AutorController extends AbstractController
     public function delete(Request $request, Autor $autor): Response
     {
         if (!$this->isCsrfTokenValid('delete'.$autor->getCodAu(), $request->request->get('_token'))) {
-            $this->addFlash('error', 'Token CSRF inválido');
+            $this->addFlash('danger', 'Token CSRF inválido');
             return $this->redirectToRoute('app_autor_index', [], Response::HTTP_SEE_OTHER);
         }
 

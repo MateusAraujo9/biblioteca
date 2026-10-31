@@ -65,4 +65,19 @@ class AssuntoController extends AbstractController
             'assunto' => $assunto,
         ]);
     }
+
+    #[Route('/{id}/excluir', name: 'app_assunto_delete', methods: ['POST'])]
+    public function delete(Request $request, Assunto $assunto): Response
+    {
+        if (!$this->isCsrfTokenValid('delete'.$assunto->getCodAs(), $request->request->get('_token'))) {
+            $this->addFlash('danger', 'Token CSRF inválido');
+            return $this->redirectToRoute('app_assunto_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $this->assuntoService->excluir($assunto);
+        $this->addFlash('success', 'Assunto excluído');
+        
+
+        return $this->redirectToRoute('app_assunto_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
