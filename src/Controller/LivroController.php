@@ -69,4 +69,18 @@ class LivroController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/{id}/excluir', name: 'app_livro_delete', methods: ['POST'])]
+    public function delete(Request $request, Livro $livro): Response
+    {
+        if (!$this->isCsrfTokenValid('delete'.$livro->getCodl(), $request->request->get('_token'))) {
+            $this->addFlash('danger', 'Token CSRF inválido. O livro não foi excluído.');
+            return $this->redirectToRoute('app_livro_index', [], Response::HTTP_SEE_OTHER);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+        }
+
+            $this->livroService->excluir($livro);
+            $this->addFlash('success', 'Livro excluído');
+
+        return $this->redirectToRoute('app_livro_index', [], Response::HTTP_SEE_OTHER);
+    }
 }
