@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1 class="page-title mb-4">Biblioteca</h1>
+    <div class="row g-3">
+        {% for c in [
+            {rota: 'app_livro_index', titulo: 'Livros', desc: 'Cadastro de Livros'},
+            {rota: 'app_autor_index', titulo: 'Autores', desc: 'Cadastro de Autores'},
+            {rota: 'app_assunto_index', titulo: 'Assuntos', desc: 'Cadastro de Assuntos'}
+        ] %}
+        <div class="col-md-4">
+            <a href="{{ path(c.rota) }}" class=" card home-card h-100 text-decoration-none text-body">
+                <div class="card-body p-4">
+                    <h2 class="h5">{{ c.titulo }}</h2>
+                    <p class="text-muted small mb-0">{{ c.desc }}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}
