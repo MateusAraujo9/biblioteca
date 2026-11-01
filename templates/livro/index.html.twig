@@ -30,7 +30,7 @@
                 <td>{{ livro.assuntos|map(a => a.descricao)|join(', ') }}</td>
                 <td>{{ livro.autores|map(a => a.nome)|join(', ') }}</td>
                 <td>{{ livro.anoPublicacao }}</td>
-                <td>{{ livro.valor }}</td>
+                <td>{{ livro.valor|format_currency('BRL') }}</td>
                 <td>
                     <a href="{{ path('app_livro_edit', {'id': livro.codl}) }}" class="btn btn-outline-warning btn-sm">
                         Editar
