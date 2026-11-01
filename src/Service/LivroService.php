@@ -17,4 +17,10 @@ class LivroService
         $this->entityManager->persist($livro);
         $this->entityManager->flush();
     }
+
+    public function excluir(Livro $livro): void
+    {
+        $this->entityManager->remove($livro);
+        $this->entityManager->flush();
+    }
 }

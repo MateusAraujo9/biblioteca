@@ -35,6 +35,12 @@
                     <a href="{{ path('app_livro_edit', {'id': livro.codl}) }}" class="btn btn-outline-warning btn-sm">
                         Editar
                     </a>
+
+                    <form method="post" action="{{ path('app_livro_delete', {'id': livro.codl}) }}" style="display:inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir este livro?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livro.codl) }}">
+                        <button class="btn btn-outline-danger btn-sm">Excluir</button>
+                    </form>
+                </td>
             </tr>
         {% else %}
             <tr>
