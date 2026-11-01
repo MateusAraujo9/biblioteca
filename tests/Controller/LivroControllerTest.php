@@ -74,6 +74,34 @@ class LivroControllerTest extends WebTestCase
         yield 'sem assunto' => [['livro[assuntos]' => []], 'Selecione pelo menos um assunto'];
     }
 
+    public function testEditarLivroTrocandoAutor(): void
+    {
+        $client = static::createClient();
+        $livro = $this->criarLivro('Livro Teste');
+        $novoAutor = $this->criarAutor('Novo Autor');
+
+        $client->request('GET', '/livro/' . $livro->getCodl() . '/editar');
+        $client->submitForm('Salvar', [
+            'livro[titulo]' => 'Novo Titulo',
+            'livro[autores]' => [$novoAutor->getCodAu()],
+        ]);
+
+        self::assertResponseRedirects('/livro');
+        $client->followRedirect();
+        self::assertSelectorTextContains('.alert-success', 'Livro atualizado');
+        self::assertSelectorTextContains('table', 'Novo Autor');
+        self::assertSelectorTextContains('table', 'Novo Titulo');
+    }
+
+    public function testEditarLivroInexistenteRetorna404(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/livro/999999/editar');
+
+        self::assertRouteSame('app_livro_edit');
+        self::assertResponseStatusCodeSame(404);
+    }
+
     private function dadosValidos(): array
     {
         $autor = $this->criarAutor('Autor Teste');
