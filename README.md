@@ -57,6 +57,8 @@ docker compose exec app php bin/phpunit
 - [x] Entidades e migrations
 - [x] CRUD de Autor
 - [x] CRUD de Assunto
-- [ ] CRUD de livros
+- [x] CRUD de livros
+- [x] Ajustes de Tema
+- [ ] View para relatórios
 
 ...
