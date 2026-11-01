@@ -25,4 +25,17 @@ class RelatorioControllerTest extends WebTestCase
         self::assertAnySelectorTextContains('h2', 'Bruno');
         self::assertSame(2, substr_count($client->getResponse()->getContent(), 'Livro X'));
     }
+
+    public function testRelatorioEmPdf(): void
+    {
+        $client = static::createClient();
+        $this->criarLivro('Livro X');
+
+        $client->request('GET', '/relatorio/pdf');
+
+        self::assertResponseIsSuccessful();
+        self::assertRouteSame('app_relatorio_pdf');
+        self::assertResponseHeaderSame('Content-Type', 'application/pdf');
+        self::assertStringStartsWith('%PDF', $client->getResponse()->getContent());
+    }
 }

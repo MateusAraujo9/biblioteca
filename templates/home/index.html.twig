@@ -5,7 +5,8 @@
         {% for c in [
             {rota: 'app_livro_index', titulo: 'Livros', desc: 'Cadastro de Livros'},
             {rota: 'app_autor_index', titulo: 'Autores', desc: 'Cadastro de Autores'},
-            {rota: 'app_assunto_index', titulo: 'Assuntos', desc: 'Cadastro de Assuntos'}
+            {rota: 'app_assunto_index', titulo: 'Assuntos', desc: 'Cadastro de Assuntos'},
+            {rota: 'app_relatorio_index', titulo: 'Relatório', desc: 'Livros agrupados por autor'}
         ] %}
         <div class="col-md-4">
             <a href="{{ path(c.rota) }}" class=" card home-card h-100 text-decoration-none text-body">

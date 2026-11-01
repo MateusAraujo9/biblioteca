@@ -10,6 +10,7 @@ Teste técnico: sistema web para cadastro de Livros, Autores e Assuntos.
 - PHPUnit (TDD)
 - Docker
 - Git
+- DomPdf
 
 ## Pré requisitos
 
@@ -29,7 +30,10 @@ docker compose up -d --build
 # 3. Instalar as dependências
 docker compose exec app composer install
 
-# 4. Criar as tabelas no banco
+# 4. Dar permissão na pasta /var
+docker compose exec app chown -R www-data:www-data var
+
+# 5. Criar as tabelas no banco
 docker compose exec app php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
@@ -59,6 +63,5 @@ docker compose exec app php bin/phpunit
 - [x] CRUD de Assunto
 - [x] CRUD de livros
 - [x] Ajustes de Tema
-- [ ] View para relatórios
-
-...
+- [x] View para relatórios
+- [x] Geração Relatório PDF

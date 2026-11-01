@@ -20,7 +20,7 @@ class RelatorioRepositoryTest extends KernelTestCase
         return new RelatorioRepository($this->entityManager()->getConnection());
     }
 
-     private function linhasDosLivros(int ...$codls): array
+    private function linhasDosLivros(int ...$codls): array
     {
         return array_values(array_filter(
             $this->repo()->livrosPorAutor(),
