@@ -17,6 +17,7 @@
                 <th>Autor</th>
                 <th>Ano Publicação</th>
                 <th>Valor</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +31,10 @@
                 <td>{{ livro.autores|map(a => a.nome)|join(', ') }}</td>
                 <td>{{ livro.anoPublicacao }}</td>
                 <td>{{ livro.valor }}</td>
+                <td>
+                    <a href="{{ path('app_livro_edit', {'id': livro.codl}) }}" class="btn btn-outline-warning btn-sm">
+                        Editar
+                    </a>
             </tr>
         {% else %}
             <tr>
