@@ -52,9 +52,10 @@ class LivroControllerTest extends WebTestCase
     public function testNaoCadastrarLivroInvalido(array $campos, string $mensagem): void
     {
         $client = static::createClient();
+        $dados = $this->dadosValidos();
         $client->request('GET', '/livro/novo');
 
-        $client->submitForm('Salvar', array_merge($this->dadosValidos(), $campos));
+        $client->submitForm('Salvar', array_merge($dados, $campos));
 
         self::assertResponseStatusCodeSame(422);
         self::assertSelectorTextContains('form', $mensagem);
@@ -63,8 +64,8 @@ class LivroControllerTest extends WebTestCase
     public static function livrosInvalidos(): iterable
     {
         yield 'titulo vazio' => [['livro[titulo]' => ''], 'Informe o título'];
-        yield 'titulo longo' => [['livro[titulo]' => str_repeat('a', 41)], 'no máximo 40 caracteres'];
-        yield 'ano com letras' => [['livro[anoPublicacao]' => '20c4'], 'O Ano deve ter 4 dígitos'];
+        yield 'titulo longo' => [['livro[titulo]' => str_repeat('a', 41)], 'O título deve ter no máximo 40 caracteres'];
+        yield 'ano com letras' => [['livro[anoPublicacao]' => '20c4'], 'O ano deve ter 4 dígitos.'];
         yield 'edição vazia' => [['livro[edicao]' => ''], 'Informe a edição'];
         yield 'edição zero' => [['livro[edicao]' => 0], 'A edição deve ser maior que zero'];
         yield 'valor vazio' => [['livro[valor]' => ''], 'Informe o valor'];
