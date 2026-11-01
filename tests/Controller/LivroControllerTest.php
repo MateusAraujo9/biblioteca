@@ -130,6 +130,20 @@ class LivroControllerTest extends WebTestCase
         self::assertNotNull($entityManager->find(Assunto::class, $assunto->getCodAs()));
     }
 
+    public function testListagemExibeValorEmReais(): void
+    {
+        $client = static::createClient();
+        $livro = $this->criarLivro('Livro Teste');
+        $livro->setValor(1234.90);
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $entityManager->flush();
+
+        $client->request('GET', '/livro');
+
+        self::assertSelectorTextContains('table', 'R$');
+        self::assertSelectorTextContains('table', '1.234,90');
+    }
+
     private function dadosValidos(): array
     {
         $autor = $this->criarAutor('Autor Teste');
