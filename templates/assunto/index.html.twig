@@ -3,37 +3,43 @@
 {% block title %}Assuntos{% endblock %}
 
 {% block body %}
-    <h1>Assuntos</h1>
-    <a href="{{ path('app_assunto_new') }}" class="btn btn-primary">Novo Assunto</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="page-title mb-0">Assuntos</h1>
+        <a href="{{ path('app_assunto_new') }}" class="btn btn-primary">Novo Assunto</a>
+    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Descrição</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for assunto in assuntos %}
-                <tr>
-                    <td>{{ assunto.codAs }}</td>
-                    <td>{{ assunto.descricao }}</td>
-                    <td>
-                        <a href="{{ path('app_assunto_edit', {'id': assunto.codAs}) }}" class="btn btn-outline-warning btn-sm">
-                            Editar
-                        </a>
-                        <form method="post" action="{{ path('app_assunto_delete', {'id': assunto.codAs}) }}" style="display:inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir este assunto?');">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ assunto.codAs) }}">
-                            <button class="btn btn-outline-danger btn-sm">Excluir</button>
-                        </form>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="3">Nenhum assunto cadastrado.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for assunto in assuntos %}
+                        <tr>
+                            <td>{{ assunto.codAs }}</td>
+                            <td>{{ assunto.descricao }}</td>
+                            <td class="text-nowrap">
+                                <a href="{{ path('app_assunto_edit', {'id': assunto.codAs}) }}" class="btn btn-outline-warning btn-sm">
+                                    Editar
+                                </a>
+                                <form method="post" action="{{ path('app_assunto_delete', {'id': assunto.codAs}) }}" style="display:inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir este assunto?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ assunto.codAs) }}">
+                                    <button class="btn btn-outline-danger btn-sm">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">Nenhum assunto cadastrado.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

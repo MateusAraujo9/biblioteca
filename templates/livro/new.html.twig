@@ -3,7 +3,14 @@
 {% block title %}Novo Livro{% endblock %}
 
 {% block body %}
-    <h1>Criar Novo Livro</h1>
-
-    {{ include('livro/_form.html.twig') }}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1>Criar Novo Livro</h1>
+            <div class="card">
+                <div class="card-body p-4">
+                    {{ include('livro/_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

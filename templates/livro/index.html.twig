@@ -3,50 +3,56 @@
 {% block title %}Livros{% endblock %}
 
 {% block body %}
-    <h1>Livros</h1>
-    <a href="{{ path('app_livro_new') }}" class="btn btn-primary">Novo Livro</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="page-title mb-0">Livros</h1>
+        <a href="{{ path('app_livro_new') }}" class="btn btn-primary">Novo Livro</a>
+    </div>
+    
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Titulo</th>
+                        <th>Editora</th>
+                        <th>Edição</th>
+                        <th>Assunto</th>
+                        <th>Autor</th>
+                        <th>Ano Publicação</th>
+                        <th class="text-end">Valor</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for livro in livros %}
+                    <tr>
+                        <td>{{ livro.codl }}</td>
+                        <td>{{ livro.titulo }}</td>
+                        <td>{{ livro.editora }}</td>
+                        <td>{{ livro.edicao }}</td>
+                        <td>{{ livro.assuntos|map(a => a.descricao)|join(', ') }}</td>
+                        <td>{{ livro.autores|map(a => a.nome)|join(', ') }}</td>
+                        <td>{{ livro.anoPublicacao }}</td>
+                        <td class="text-end">{{ livro.valor|format_currency('BRL') }}</td>
+                        <td class="text-nowrap">
+                            <a href="{{ path('app_livro_edit', {'id': livro.codl}) }}" class="btn btn-outline-warning btn-sm">
+                                Editar
+                            </a>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Código</th>
-                <th>Titulo</th>
-                <th>Editora</th>
-                <th>Edição</th>
-                <th>Assunto</th>
-                <th>Autor</th>
-                <th>Ano Publicação</th>
-                <th>Valor</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for livro in livros %}
-            <tr>
-                <td>{{ livro.codl }}</td>
-                <td>{{ livro.titulo }}</td>
-                <td>{{ livro.editora }}</td>
-                <td>{{ livro.edicao }}</td>
-                <td>{{ livro.assuntos|map(a => a.descricao)|join(', ') }}</td>
-                <td>{{ livro.autores|map(a => a.nome)|join(', ') }}</td>
-                <td>{{ livro.anoPublicacao }}</td>
-                <td>{{ livro.valor|format_currency('BRL') }}</td>
-                <td>
-                    <a href="{{ path('app_livro_edit', {'id': livro.codl}) }}" class="btn btn-outline-warning btn-sm">
-                        Editar
-                    </a>
-
-                    <form method="post" action="{{ path('app_livro_delete', {'id': livro.codl}) }}" style="display:inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir este livro?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livro.codl) }}">
-                        <button class="btn btn-outline-danger btn-sm">Excluir</button>
-                    </form>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">Nenhum livro encontrado</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                            <form method="post" action="{{ path('app_livro_delete', {'id': livro.codl}) }}" style="display:inline-block;" onsubmit="return confirm('Tem certeza que deseja excluir este livro?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ livro.codl) }}">
+                                <button class="btn btn-outline-danger btn-sm">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">Nenhum livro encontrado</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -13,21 +13,28 @@
         {% endblock %}
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        {% set rota = app.request.attributes.get('_route') %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-prtimary-custom shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ path('app_home') }}">Biblioteca</a>
-                <div class="navbar-nav">
-                    <a class="nav-link" href="{{ path('app_livro_index') }}">Livros</a>
-                    <a class="nav-link" href="{{ path('app_autor_index') }}">Autores</a>
-                    <a class="nav-link" href="{{ path('app_assunto_index') }}">Assuntos</a>
+                <a class="navbar-brand fw-semibold" href="{{ path('app_home') }}">Biblioteca</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="menu">
+                    <div class="navbar-nav ms-auto">
+                        <a class="nav-link {{rota starts with 'app_livro' ? 'active' : ''}}" href="{{ path('app_livro_index') }}">Livros</a>
+                        <a class="nav-link {{rota starts with 'app_autor' ? 'active' : ''}}" href="{{ path('app_autor_index') }}">Autores</a>
+                        <a class="nav-link {{rota starts with 'app_assunto' ? 'active' : ''}}" href="{{ path('app_assunto_index') }}">Assuntos</a>
+                    </div>
                 </div>
             </div>
         </nav>
 
-        <main class="container">
+        <main class="container py-4">
             {% for tipo, mensagens in app.flashes %}
                 {% for mensagem in mensagens %}
-                    <div class="alert alert-{{ tipo == 'error' ? 'danger' : tipo }}">
+                    <div class="alert alert-{{ tipo == 'error' ? 'danger' : tipo }} alert-dismissible fade show">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         {{ mensagem }}
                     </div>
                 {% endfor %}

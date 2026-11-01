@@ -3,7 +3,14 @@
 {% block title %}Editar Assunto{% endblock %}
 
 {% block body %}
-    <h1>Editar Assunto</h1>
-
-    {{ include('assunto/_form.html.twig') }}
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1>Editar Assunto</h1>
+            <div class="card">
+                <div class="card-body p-4">
+                    {{ include('assunto/_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

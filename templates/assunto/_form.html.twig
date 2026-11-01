@@ -1,5 +1,7 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ botao|default('Salvar') }}</button>
-    <a href="{{ path('app_assunto_index') }}" class="btn btn-secondary">Voltar</a>
+    <div class="d-flex gap-2 mt-3">
+        <button class="btn btn-primary">{{ botao|default('Salvar') }}</button>
+        <a href="{{ path('app_assunto_index') }}" class="btn btn-secondary">Voltar</a>
+    </div> 
 {{ form_end(form) }}

@@ -1,3 +1,52 @@
+:root {
+    --cor-primaria: #1f3a5f;
+    --cor-destaque: #e0a526;
+    --fundo: #f4f6f9;
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--fundo); 
+    font-size: .95rem;
+}
+
+.bg-prtimary-custom {
+    background-color: var(--cor-primaria);
+}
+
+.navbar .nav-link.active {
+    border-bottom: 2px solid var(--cor-destaque);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--cor-primaria);
+    --bs-btn-border-color: var(--cor-primaria);
+    --bs-btn-hover-bg: #16304f;
+    --bs-btn-hover-border-color: #16304f;
+}
+
+.card {
+    border: 0;
+    border-radius: .75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.table thead th{
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6c757d;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--cor-primaria);
+}
+
+.home-card {
+    transition: transform 0.15s;
+}
+
+.home-card:hover {
+    transform: translateY(-3px);
 }
