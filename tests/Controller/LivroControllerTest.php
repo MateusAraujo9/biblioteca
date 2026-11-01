@@ -5,6 +5,10 @@ namespace App\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\Suport\CriaEntidadesTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
+use App\Entity\Autor;
+use App\Entity\Assunto;
+use App\Entity\Livro;
+use Doctrine\ORM\EntityManagerInterface;
 
 class LivroControllerTest extends WebTestCase
 {
@@ -100,6 +104,30 @@ class LivroControllerTest extends WebTestCase
 
         self::assertRouteSame('app_livro_edit');
         self::assertResponseStatusCodeSame(404);
+    }
+
+    public function testExcluirLivroMantemAutoresEAssuntos(): void
+    {
+        $client = static::createClient();
+        $livro = $this->criarLivro('Livro Teste');
+        $autor = $livro->getAutores()->first();
+        $assunto = $livro->getAssuntos()->first();
+        $id = $livro->getCodl();
+
+        $crawler = $client->request('GET', '/livro');
+        $form = $crawler->filter(sprintf('form[action="/livro/%d/excluir"]', $id))->form();
+        $client->submit($form);
+
+        self::assertResponseRedirects('/livro');
+        $client->followRedirect();
+        self::assertSelectorTextContains('.alert-success', 'Livro excluído');
+
+        // Verifica se o autor e o assunto ainda existem
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $entityManager->clear();
+        self::assertNull($entityManager->find(Livro::class, $livro->getCodl()));
+        self::assertNotNull($entityManager->find(Autor::class, $autor->getCodAu()));
+        self::assertNotNull($entityManager->find(Assunto::class, $assunto->getCodAs()));
     }
 
     private function dadosValidos(): array
