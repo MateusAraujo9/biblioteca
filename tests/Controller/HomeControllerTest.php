@@ -16,5 +16,6 @@ class HomeControllerTest extends WebTestCase
         self::assertSelectorExists('a[href="/livro"]');
         self::assertSelectorExists('a[href="/autor"]');
         self::assertSelectorExists('a[href="/assunto"]');
+        self::assertSelectorExists('a[href="/relatorio"]');
     }
 }
